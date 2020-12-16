@@ -1,29 +1,30 @@
-var http = require('http');     // call http module
 var fs = require('fs');
+var express = require('express');
+var path = require('path');     //path module for folder dir. getting
+var app = express();
+app.use('/public', express.static(path.join(__dirname,'public'))); // use this for getting public files
 
-var homeController = function (request, response) {         //calling a page
-    fs.readFile('index.html', function (error, data) {
-        response.write(data);
-
-        response.end("I kill youuuuu king");
-    })
-}
-
-var loginController = function(request,response){           //calling a page
-    fs.readFile('login.html', function (error, data) {
-        response.write(data);
-
-    })
-}
-
-var server = http.createServer(
-    function (request, response) {
-        if (request.url == '/') {
-            homeController(request,response);
+app.get('/', function(request,response){                //express GET method
+    fs.readFile('index.html', function(error,data){
+        if(error){                                      // error find
+            console.log('GET index.html ERROR');
+            response.end('Something Went Wrong');
         }
-        if (request.url == '/login') {
-            loginController(request,response);
-        }
+        response.write(data);
+        response.end('We Run');
     });
+});
 
-server.listen(7676);
+app.get('/login',function(request, response){
+    fs.readFile('login.html',function(error,data){
+        response.write(data);
+    });
+});
+
+app.get('/logout', function(request,response){
+    fs.readFile('logout.html',function(error, data){
+        response.write(data);
+    })
+})
+
+app.listen(7676);                   // now, we use app.listen different from pure http
