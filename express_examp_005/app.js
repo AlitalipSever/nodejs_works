@@ -16,15 +16,13 @@ app.get('/', function(request,response){                //express GET method
 });
 
 app.get('/login',function(request, response){
-    fs.readFile('login.html',function(error,data){
-        response.write(data);
-    });
+    response.sendFile(path.join(__dirname,'login.html'));      // using express readFile same work
 });
 
 app.get('/logout', function(request,response){
     fs.readFile('logout.html',function(error, data){
-        response.write(data);
+        response.write(data); 
     })
 })
 
-app.listen(7676);                   // now, we use app.listen different from pure http
+app.listen(7676);                   // now, we use app.listen different from http
